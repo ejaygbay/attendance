@@ -49,11 +49,15 @@
                 .then(data => {
                     if(data.length > 0){
                         data.forEach((ele, index) => {
+                            let date_time = ele.date_created.split(" ");
+                            let only_date = new Date(date_time[0]);
+                            let date = only_date.toDateString();
+
                             let tbody = document.querySelector("tbody");
                             let html = `<tr>
                                             <td>${index + 1}.</td>
                                             <td>${ele.member_name}</td>
-                                            <td>${ele.date_created}</td>
+                                            <td>${date}</td>
                                         </tr>`;
                             tbody.insertAdjacentHTML("beforeend", html);
                         })
