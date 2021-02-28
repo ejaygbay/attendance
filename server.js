@@ -110,6 +110,9 @@ const server = http.createServer((req, res) => {
     } else if(url === '/data/groups' && method === 'GET'){
         // TODO 4
         // Get stored data from the groups table
+        db.all(`SELECT * FROM groups`, (err, data) => {
+            res.end(JSON.stringify(data))
+        })
     
     } else if(url === '/data/members' && method === 'GET'){
         // TODO 9

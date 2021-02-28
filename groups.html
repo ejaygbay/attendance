@@ -4,18 +4,6 @@
                     <th>Name</th>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Group 1</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Group 2</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Group 3</td>
-                    </tr>
                 </tbody>
             </table>
         </main>
@@ -27,6 +15,19 @@
                  * Make a GET request to this route "/data/groups" and get all of the groups
                  * Display the result in the table
                  */
+
+                 fetch("http://localhost:3000/data/groups")
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach((ele, index) => {
+                        let tbody = document.querySelector("tbody");
+                        let html = `<tr>
+                                        <td>${index + 1}.</td>
+                                        <td>${ele.group_name}</td>
+                                    </tr>`;
+                        tbody.insertAdjacentHTML("beforeend", html);
+                    })
+                })
             }
             getGroups();
         </script>
