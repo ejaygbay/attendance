@@ -16,14 +16,14 @@
                  * Display the result in the table
                  */
 
-                 fetch("http://localhost:3000/data/groups")
+                fetch("http://localhost:3000/data/groups")
                 .then(response => response.json())
                 .then(data => {
                     data.forEach((ele, index) => {
                         let tbody = document.querySelector("tbody");
                         let html = `<tr>
                                         <td>${index + 1}.</td>
-                                        <td>${ele.group_name}</td>
+                                        <td style="text-transform: capitalize">${ele.group_name}</td>
                                     </tr>`;
                         tbody.insertAdjacentHTML("beforeend", html);
                     })

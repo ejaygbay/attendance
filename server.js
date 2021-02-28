@@ -106,7 +106,12 @@ const server = http.createServer((req, res) => {
     } else if(url === '/member/create' && method === 'POST'){
         // TODO 7
         // Store the data in the members table
-    
+        req.on("data", (data) => {
+            let result = JSON.parse(data);
+            db.run(`INSERT INTO members(member_name, group_id, date_created) VALUES(?, ?, datetime('now'));`, result.member, result.group_name, (err, result) => {
+                !err ? res.end(JSON.stringify({status: 0, msg: "member created"})) : res.end(JSON.stringify({status: 1, msg: "member not created"}))
+            })
+        })    
     } else if(url === '/data/groups' && method === 'GET'){
         // TODO 4
         // Get stored data from the groups table

@@ -1,8 +1,8 @@
             <div id="form">
-                <select name="" id="">
-                    <option value="">Select a Group</option>
+                <select id="groups">
+                    <option value="select" selected disabled>Select a Group</option>
                 </select>
-                <input type="text" id="group-name" placeholder="Group Name">
+                <input type="text" id="member-name" placeholder="Member Name">
                 <button onclick="createMember()">Create</button>
             </div>
         </main>
@@ -14,12 +14,61 @@
                  * Make a GET request to this route "/data/groups" and get all of the groups
                  * Display the result in the select list for user to select their group
                  */
+                 fetch("http://localhost:3000/data/groups")
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach((ele) => {
+                        let select = document.querySelector("#groups");
+                        let html = `<option value="${ele.id}" style="text-transform: capitalize">${ele.group_name}</option>`;
+                        select.insertAdjacentHTML("beforeend", html);
+                    })
+                })
             }
             getGroups();
 
             // TODO 6
             function createMember(){
-                // Make a POST request and send the name of the group to the route "/group/create"
+                // Make a POST request and send the name of the member and group to the route "/member/create"
+                let group_name = document.querySelector("#groups").value;
+                let member = document.getElementById("member-name").value;
+
+                if(member.trim().length > 0){
+                    if(group_name !== "select"){
+                        fetch("/member/create", {
+                            method: "POST",
+                            "Contant-Type": "application/json",
+                            body: JSON.stringify({group_name: group_name, member: member})
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data.status === 0){
+                                let msg = "Member created successfully."
+                                displayMessage(msg, 4000, "green");
+                                document.getElementById("member-name").value = "";
+                                document.querySelector("#groups").selectedIndex = 0;
+                            } else {
+                                let msg = "A error occurred. Please try again."
+                                displayMessage(msg, 4000, "red");
+                            }
+                        })
+                    } else {
+                        let msg = "Please select a group."
+                        displayMessage(msg, 4000, "red");
+                    }
+                } else {
+                    let msg = "Member cannot be empty."
+                    displayMessage(msg, 4000, "red");
+                }
+            }
+
+            function displayMessage(msg, duration, color){
+                let msg_ele = document.querySelector("#message");
+                msg_ele.innerHTML = msg;
+                msg_ele.style = `visibility: visible; background: ${color}`;
+                let msg_timeout = setTimeout(() => {
+                    document.querySelector("#message").style = `visibility: hidden;`;
+                    clearTimeout(msg_timeout);
+                }, duration)
             }
         </script>
     </body>
