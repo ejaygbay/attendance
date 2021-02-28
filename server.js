@@ -92,6 +92,12 @@ const server = http.createServer((req, res) => {
     } else if(url === '/group/create' && method === 'POST'){
         // TODO 2
         // Store the data in the groups table
+        req.on("data", (data) => {
+            let result = JSON.parse(data);
+            db.run(`INSERT INTO groups("group_name", "date_created") VALUES(?, datetime('now'));`, result.group_name, (err, result) => {
+                !err ? res.end(JSON.stringify({status: 0, msg: "group created"})) : res.end(JSON.stringify({status: 1, msg: "group not created"}))
+            })
+        })
     
     } else if(url === '/attendance/create' && method === 'POST'){
         // TODO 11

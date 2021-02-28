@@ -8,6 +8,38 @@
             // TODO 1
             function createGroup(){
                 // Make a POST request and send the name of the group to this route "/group/create"
+                let group_name = document.getElementById("group-name").value;
+                if(group_name.trim().length > 0){
+                    fetch("/group/create", {
+                        method: "POST",
+                        "Contant-Type": "application/json",
+                        body: JSON.stringify({group_name: group_name})
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data.status === 0){
+                            let msg = "Group created successfully."
+                            displayMessage(msg, 4000, "green");
+                            document.getElementById("group-name").value = "";
+                        } else {
+                            let msg = "A error occurred. Please try again."
+                            displayMessage(msg, 4000, "red");
+                        }
+                    })
+                } else {
+                    let msg = "Group cannot be empty."
+                    displayMessage(msg, 4000, "red");
+                }
+            }
+
+            function displayMessage(msg, duration, color){
+                let msg_ele = document.querySelector("#message");
+                msg_ele.innerHTML = msg;
+                msg_ele.style = `visibility: visible; background: ${color}`;
+                let msg_timeout = setTimeout(() => {
+                    document.querySelector("#message").style = `visibility: hidden;`;
+                    clearTimeout(msg_timeout);
+                }, duration)
             }
         </script>
     </body>
