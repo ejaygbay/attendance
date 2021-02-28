@@ -147,10 +147,16 @@ const server = http.createServer((req, res) => {
             res.end(JSON.stringify(data));
         })
     
-    } else if(endpoint === '/data/attendance/individual' && method === 'POST'){
+    } else if(endpoint === '/data/attendance/individual' && method === 'GET'){
         // TODO 16
         // Get stored data from the attendance table
-    
+        let group_id = url.searchParams.get('group_id');
+        let member_id = url.searchParams.get('member_id');
+        
+        db.all(`SELECT member_name, attendance.date_created FROM attendance INNER JOIN members ON members.id = attendance.member_id WHERE attendance.group_id = ? AND attendance.member_id = ?`, group_id, member_id, (err, data) => {
+            res.end(JSON.stringify(data));
+        })
+
     } else {
         res.end("404")
     
