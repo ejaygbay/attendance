@@ -30,6 +30,11 @@ function createTables(){
      *     2. https://www.sqlitetutorial.net/sqlite-date/
      */
 
+    db.run(`CREATE TABLE IF NOT EXISTS groups(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, group_name VARCHAR(30), date_created DATETIME);
+    `, (err, result) => {
+        !err ? console.log("Groups table created.") : console.log("Groups table not created.")
+    })
+
     /** MEMBERS TABLE
      * 
      * Create a table called 'members'
@@ -39,6 +44,10 @@ function createTables(){
      *     3. 'group_id' should have the following: 'INTEGER NOT NULL' and
      *     4. 'date_created' should have datatype of 'DATETIME'
      */
+    db.run(`CREATE TABLE IF NOT EXISTS members(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, member_name VARCHAR(30), group_id INTEGER NOT NULL, date_created DATETIME);
+    `, (err, result) => {
+        !err ? console.log("Members table created.") : console.log("Members table not created.")
+    })
 
     /** ATTENDANCE TABLE
      * 
@@ -49,8 +58,10 @@ function createTables(){
      *     3. 'member_id' should have the following: 'INTEGER NOT NULL' and
      *     4. 'date_created' should have datatype of 'DATETIME'
      */
-
-    console.log("TABLES not created. Remove me after creating all of the tables")
+    db.run(`CREATE TABLE IF NOT EXISTS attendance(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, group_id INTEGER NOT NULL, member_id INTEGER NOT NULL, date_created DATETIME);
+    `, (err, result) => {
+        !err ? console.log("Attendance table created.") : console.log("Attendance table not created.")
+    })
 }
 
 const server = http.createServer((req, res) => {
