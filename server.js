@@ -1,5 +1,7 @@
 const http = require("http");
 const fs = require("fs");
+const qs = require("querystring");
+const {URL} = require("url");
 const sqlite3 = require("sqlite3").verbose()
 let db = new sqlite3.Database('./attendance');
 
@@ -65,31 +67,32 @@ function createTables(){
 }
 
 const server = http.createServer((req, res) => {
-    let url = req.url;
+    let url = new URL(req.url, "http://localhost:3000");
+    let endpoint = url.pathname;
     let method = req.method;
 
-    if(url === '/' && method === 'GET'){
+    if(endpoint === '/' && method === 'GET'){
         addMenuToPage("./groups.html", 'home', data => res.end(data));
     
-    } else if(url === '/groups' && method === 'GET'){
+    } else if(endpoint === '/groups' && method === 'GET'){
         addMenuToPage("./groups.html", 'groups', data => res.end(data));
     
-    } else if(url === '/group/create' && method === 'GET'){
+    } else if(endpoint === '/group/create' && method === 'GET'){
         addMenuToPage("./new-group.html", 'create_group', data => res.end(data));
     
-    } else if(url === '/member/create' && method === 'GET'){
+    } else if(endpoint === '/member/create' && method === 'GET'){
         addMenuToPage("./new-member.html", 'create_member', data => res.end(data));
     
-    } else if(url === '/attendance' && method === 'GET'){
+    } else if(endpoint === '/attendance' && method === 'GET'){
         addMenuToPage("./past-attendance.html", 'attendance', data => res.end(data));
     
-    } else if(url === '/attendance/individual' && method === 'GET'){
+    } else if(endpoint === '/attendance/individual' && method === 'GET'){
         addMenuToPage("./individual-attendance.html", 'individual_attendance', data => res.end(data));
     
-    } else if(url === '/attendance/create' && method === 'GET'){
+    } else if(endpoint === '/attendance/create' && method === 'GET'){
         addMenuToPage("./new-attendance.html", 'new_attendance', data => res.end(data));
     
-    } else if(url === '/group/create' && method === 'POST'){
+    } else if(endpoint === '/group/create' && method === 'POST'){
         // TODO 2
         // Store the data in the groups table
         req.on("data", (data) => {
@@ -99,11 +102,18 @@ const server = http.createServer((req, res) => {
             })
         })
     
-    } else if(url === '/attendance/create' && method === 'POST'){
+    } else if(endpoint === '/attendance/create' && method === 'POST'){
         // TODO 11
         // Store the data in the attendance table
+        req.on("data", (data) => {
+            let result = JSON.parse(data);
+            result.members_present.forEach((ele, index) => {
+                db.run(`INSERT INTO attendance(group_id, member_id, date_created) VALUES(?, ?, datetime('now'));`, result.group_id, ele);
+            })
+            res.end(JSON.stringify({status: 0, msg: "attendance created"}));
+        })
     
-    } else if(url === '/member/create' && method === 'POST'){
+    } else if(endpoint === '/member/create' && method === 'POST'){
         // TODO 7
         // Store the data in the members table
         req.on("data", (data) => {
@@ -112,22 +122,27 @@ const server = http.createServer((req, res) => {
                 !err ? res.end(JSON.stringify({status: 0, msg: "member created"})) : res.end(JSON.stringify({status: 1, msg: "member not created"}))
             })
         })    
-    } else if(url === '/data/groups' && method === 'GET'){
+    } else if(endpoint === '/data/groups' && method === 'GET'){
         // TODO 4
         // Get stored data from the groups table
         db.all(`SELECT * FROM groups`, (err, data) => {
             res.end(JSON.stringify(data))
         })
     
-    } else if(url === '/data/members' && method === 'GET'){
+    } else if(endpoint === '/data/members' && method === 'GET'){
         // TODO 9
         // Get stored data from the members table
+        let group_id = url.searchParams.get('id');
+        
+        db.all(`SELECT id, member_name FROM members WHERE group_id = ?`, group_id, (err, data) => {
+            res.end(JSON.stringify(data))
+        })
     
-    } else if(url === '/data/attendance' && method === 'GET'){
+    } else if(endpoint === '/data/attendance' && method === 'GET'){
         // TODO 13
         // Get stored data from the attendance table
     
-    } else if(url === '/data/attendance/individual' && method === 'POST'){
+    } else if(endpoint === '/data/attendance/individual' && method === 'POST'){
         // TODO 16
         // Get stored data from the attendance table
     

@@ -1,5 +1,5 @@
-            <select name="" id="">
-                <option value="">Select a Group</option>
+            <select id="groups" onchange="getGroupMembers()">
+                <option value="select" disabled selected>Select a Group</option>
             </select>
             
             <table>
@@ -10,42 +10,34 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>1</td>
-                        <td>John Doe</td>
-                        <td><input type="checkbox" id=""></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>John Doe</td>
-                        <td><input type="checkbox" id=""></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>John Doe</td>
-                        <td><input type="checkbox" id=""></td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>John Doe</td>
-                        <td><input type="checkbox" id=""></td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>John Doe</td>
-                        <td><input type="checkbox" id=""></td>
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td>John Doe</td>
-                        <td><input type="checkbox" id=""></td>
+                        <td colspan="3">No group has been selected, please select one.</td>
                     </tr>
                 </tbody>
             </table>
 
-            <button onclick="completeAttendance()">Submit</button>
+            <button id="submit" onclick="completeAttendance()" style="display: none">Submit</button>
         </main>
 
         <script>
+            let group_name;
+
+            function getGroups(){
+                /**
+                 * Make a GET request to this route "/data/groups" and get all of the groups
+                 * Display the result in the select list for user to select their group
+                 */
+                fetch("http://localhost:3000/data/groups")
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach((ele) => {
+                        let select = document.querySelector("#groups");
+                        let html = `<option value="${ele.id}" style="text-transform: capitalize">${ele.group_name}</option>`;
+                        select.insertAdjacentHTML("beforeend", html);
+                    })
+                })
+            }
+            getGroups();
+
             // TODO 8
             function getGroupMembers(){
                 /**
@@ -53,6 +45,33 @@
                  * Make a GET request to "/data/members" and get all of the members for the selected group
                  * Display the members in the table
                  */
+
+                document.querySelector("tbody").innerHTML = "";
+                group_name = document.querySelector("#groups").value;
+                
+                fetch(`http://localhost:3000/data/members?id=${group_name}`)
+                .then(response => response.json())
+                .then(data => {
+                    if(data.length > 0){
+                        document.querySelector("#submit").style = "display: block"
+                        data.forEach((ele, index) => {
+                            let tbody = document.querySelector("tbody");
+                            let html = `<tr>
+                                            <td>${index + 1}</td>
+                                            <td>${ele.member_name}</td>
+                                            <td><input type="checkbox" id="${ele.id}"></td>
+                                        </tr>`;
+                            tbody.insertAdjacentHTML("beforeend", html);
+                        })
+                    }else{
+                        let tbody = document.querySelector("tbody");
+                        let html = `<tr>
+                                        <td colspan="3">This group does not have any member.</td>
+                                    </tr>`;
+                        tbody.insertAdjacentHTML("beforeend", html);                        document.querySelector("#submit").style = "display: block"
+                        document.querySelector("#submit").style = "display: none";
+                    }
+                })
             }
 
             // TODO 10
@@ -61,6 +80,43 @@
                  * Get the data from the table
                  * Make a POST request to "/attendance/create" and submit the data
                  */
+                let checkboxes = document.querySelectorAll("input");
+                let member_ids = [];
+
+                checkboxes.forEach(ele => {
+                    if(ele.checked){
+                        member_ids.push(ele.id);
+                    }
+                })
+
+                fetch("/attendance/create", {
+                    method: "POST",
+                    "Contant-Type": "application/json",
+                    body: JSON.stringify({group_id: group_name, members_present: member_ids})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    if(data.status === 0){
+                        let msg = "Attendance created successfully."
+                        displayMessage(msg, 4000, "green");
+                        document.querySelector("#groups").selectedIndex = 0;
+                        getGroupMembers();
+                    } else {
+                        let msg = "A error occurred. Please try again."
+                        displayMessage(msg, 4000, "red");
+                    }
+                }) 
+            }
+
+            function displayMessage(msg, duration, color){
+                let msg_ele = document.querySelector("#message");
+                msg_ele.innerHTML = msg;
+                msg_ele.style = `visibility: visible; background: ${color}`;
+                let msg_timeout = setTimeout(() => {
+                    document.querySelector("#message").style = `visibility: hidden;`;
+                    clearTimeout(msg_timeout);
+                }, duration)
             }
         </script>
     </body>
