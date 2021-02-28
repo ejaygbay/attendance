@@ -1,5 +1,5 @@
-            <select name="" id="">
-                <option value="">Select a Group</option>
+            <select id="groups" onchange="getPastAttendance()">
+                <option value="select" selected disabled>Select a Group</option>
             </select>
             <table>
                 <thead>
@@ -9,15 +9,30 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>1</td>
-                        <td>John Doe</td>
-                        <td>Feb 19, 2021</td>
+                        <td colspan="3">No group has been selected, please select one.</td>
                     </tr>
                 </tbody>
             </table>
         </main>
 
         <script>
+            function getGroups(){
+                /**
+                 * Make a GET request to this route "/data/groups" and get all of the groups
+                 * Display the result in the select list for user to select their group
+                 */
+                fetch("http://localhost:3000/data/groups")
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach((ele) => {
+                        let select = document.querySelector("#groups");
+                        let html = `<option value="${ele.id}" style="text-transform: capitalize">${ele.group_name}</option>`;
+                        select.insertAdjacentHTML("beforeend", html);
+                    })
+                })
+            }
+            getGroups();
+
             // TODO 12
             function getPastAttendance(){
                 /**
@@ -26,8 +41,31 @@
                  *      of the past attendance for the selected group
                  * Display the data in the table
                  */
+                document.querySelector("tbody").innerHTML = "";
+                let group_name = document.querySelector("#groups").value;
+                
+                fetch(`http://localhost:3000/data/attendance?id=${group_name}`)
+                .then(response => response.json())
+                .then(data => {
+                    if(data.length > 0){
+                        data.forEach((ele, index) => {
+                            let tbody = document.querySelector("tbody");
+                            let html = `<tr>
+                                            <td>${index + 1}.</td>
+                                            <td>${ele.member_name}</td>
+                                            <td>${ele.date_created}</td>
+                                        </tr>`;
+                            tbody.insertAdjacentHTML("beforeend", html);
+                        })
+                    }else{
+                        let tbody = document.querySelector("tbody");
+                        let html = `<tr>
+                                        <td colspan="3">This group does not have any attendance.</td>
+                                    </tr>`;
+                        tbody.insertAdjacentHTML("beforeend", html);                        
+                    }
+                })
             }
-            getPastAttendance();
         </script>
     </body>
 </html>

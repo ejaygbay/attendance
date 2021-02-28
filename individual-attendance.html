@@ -1,10 +1,10 @@
             <form>
-                <select name="" id="">
-                    <option value="">Select a Group</option>
+                <select id="groups">
+                    <option value="select" selected disabled>Select a Group</option>
                 </select>
 
-                <select name="" id="">
-                    <option value="">Select a Member</option>
+                <select id="members">
+                    <option value="select" selected disabled>Select a Member</option>
                 </select>
             </form>
 
@@ -25,6 +25,23 @@
         </main>
 
         <script>
+            function getGroups(){
+                /**
+                 * Make a GET request to this route "/data/groups" and get all of the groups
+                 * Display the result in the select list for user to select their group
+                 */
+                fetch("http://localhost:3000/data/groups")
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach((ele) => {
+                        let select = document.querySelector("#groups");
+                        let html = `<option value="${ele.id}" style="text-transform: capitalize">${ele.group_name}</option>`;
+                        select.insertAdjacentHTML("beforeend", html);
+                    })
+                })
+            }
+            getGroups();
+
             // TODO 14
             function getGroupMembers(){
                 /**
