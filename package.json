@@ -1,0 +1,17 @@
+{
+  "name": "attendance",
+  "version": "1.0.0",
+  "description": "This project will be used for collecting attandance for groups, organizations etc.",
+  "main": "server.js",
+  "dependencies": {
+    "nodemon": "^2.0.7",
+    "sqlite3": "^5.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "author": "Kwagei Group",
+  "license": "ISC"
+}

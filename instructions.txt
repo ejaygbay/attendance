@@ -1,0 +1,68 @@
+                        ####################%%%%%%%%%%%%####################
+                        #                                                  #
+                        #              -->  INSTRUCTIONS  <--              #
+                        #                                                  #
+                        ####################%%%%%%%%%%%%####################
+                                ||                                 ||
+                                ||                                 ||
+                                \/                                 \/
+-----------------------------------------------------------------------------------------------------
+After cloning the project, do the following:
+    1. Create a database called "attendance" in your project directory using terminal
+    2. Run "npm install"
+    3. Go and begin your implementations from TODO zero(0) in server.js
+When you are done with "TODO 0", which is creating the tables, move to the other instructions below.
+-----------------------------------------------------------------------------------------------------
+When you click on "Add Group" in the menu, you should be able to create a new group.
+To implement this, do the following:
+
+    1. Go to new-group.html and implement TODO 1
+    2. Go to server.js and implement TODO 2
+------------------------------------------------------------------------------------------------------
+When you click on "Groups" in the menu, you should be able to see all of the groups that were created.
+To implement this, do the following:
+
+Go to groups.html and implement TODO 3
+Go to server.js and implement TODO 4
+------------------------------------------------------------------------------------------------------
+When you click on "Add Member" in the menu, you should be able to add a new member to a group.
+To implement this, do the following:
+
+Go to new-member.html and implement TODO 5 and 6. You don't have to reimplement TODO 4 in server.js
+Go to server.js and implement TODO 7
+------------------------------------------------------------------------------------------------------
+When you click on "New Attendance" in the menu, you should be able to create a new attendance.
+To implement this, do the following:
+
+Go to new-attendance.html and implement TODO 8
+Go to server.js and implement TODO 9
+Go to new-attendance.html and implement TODO 10
+Go to server.js and implement TODO 11
+------------------------------------------------------------------------------------------------------
+When you click on "Past Attendance" in the menu, you should be able to see all of the past attendance.
+To implement this, do the following:
+
+Go to past-attendance.html and implement TODO 12
+Go to server.js and implement TODO 13
+------------------------------------------------------------------------------------------------------
+When you click on "Individual Attendance", you should be able to see all of the person's past records.
+To implement this, do the following:
+
+Go to individual-attendance.html and implement TODO 14 and 15.
+    You don't have to reimplement TODO 9 in server.js
+Go to server.js and implement TODO 16
+------------------------------------------------------------------------------------------------------
+BONUS: Apply style to your work.
+
+To style the menu, go to menu.html an write your CSS rules
+------------------------------------------------------------------------------------------------------
+
+=================
+||   WARNING:  ||
+=================
+
+Do not add and any of the below tags to any of the HTML's documents.
+    1. html
+    2. head
+
+NOTE: You are free to add a style tag to any of the HTML's file but at the very top

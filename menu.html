@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance</title>
+    <style>
+        body{
+            box-sizing: border-box;
+        }
+        main{
+            display: grid;
+            justify-content: center;
+        }
+        .nav-bar{
+            background: lightblue;
+            text-align: right;
+            padding: 1em;
+            font-size: 1.3em;
+        }
+        .nav-bar a {
+            margin-right: 0.5em;
+            text-decoration: none;
+        }
+        .nav-bar a:hover{
+            text-decoration: underline;
+            color: #000
+        }
+
+        input[type="text"], select{
+            font-size: 1.4em;
+            margin-top: 1em;
+        }
+
+        table{
+            margin-top: 2em;
+        }
+
+        button{
+            background: lightblue;
+            font-size: 1.4em;
+            border: solid 2px gray;
+        }
+
+        button:hover{
+            cursor: pointer;
+        }
+
+        thead th {
+            background: gray;
+            font-size: 1.2em;
+        }
+
+        tbody td{
+            padding: 6px 6vw;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #dddddd;
+        }
+
+    </style>
+</head>
+<body>
+    <section>
+        <div class="nav-bar">
+            <a href="/groups" class="groups">Groups</a>
+            <a href="/group/create" class="create_group">Add Group</a>
+            <a href="/member/create" class="create_member">Add Member</a>
+            <a href="/attendance" class="attendance">Past Attendance</a>
+            <a href="/attendance/individual" class="individual_attendance">Individual Attendance</a>
+            <a href="/attendance/create" class="new_attendance">New Attendance</a>
+        </div>
+    </section>
+    <main>

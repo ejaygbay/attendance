@@ -1,0 +1,67 @@
+            <select name="" id="">
+                <option value="">Select a Group</option>
+            </select>
+            
+            <table>
+                <thead>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Present</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>John Doe</td>
+                        <td><input type="checkbox" id=""></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>John Doe</td>
+                        <td><input type="checkbox" id=""></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>John Doe</td>
+                        <td><input type="checkbox" id=""></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>John Doe</td>
+                        <td><input type="checkbox" id=""></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>John Doe</td>
+                        <td><input type="checkbox" id=""></td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>John Doe</td>
+                        <td><input type="checkbox" id=""></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <button onclick="completeAttendance()">Submit</button>
+        </main>
+
+        <script>
+            // TODO 8
+            function getGroupMembers(){
+                /**
+                 * Get the name of the group that was selected
+                 * Make a GET request to "/data/members" and get all of the members for the selected group
+                 * Display the members in the table
+                 */
+            }
+
+            // TODO 10
+            function completeAttendance(){
+                /**
+                 * Get the data from the table
+                 * Make a POST request to "/attendance/create" and submit the data
+                 */
+            }
+        </script>
+    </body>
+</html>
